@@ -1,0 +1,14 @@
+{
+  "transactionHash": "0x3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+  "network": "Ethereum",
+  "fromAddress": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC",
+  "toAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec",
+  "amount": 1,
+  "gasUsed": 46000,
+  "gasPrice": 32,
+  "nonce": 8,
+  "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec",
+  "functionName": "approve(address,uint256)",
+  "description": "Transfer USDT to Wallet A",
+  "rawData": "095ea7b3000000000000000000000000ab5801a7d398351b8be11c439e05c5b3259aec9ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}

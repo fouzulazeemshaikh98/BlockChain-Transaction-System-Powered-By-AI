@@ -1,0 +1,16 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+pandas==2.2.3
+numpy==1.26.4
+scikit-learn==1.5.2
+python-dotenv==1.0.1
+python-multipart==0.0.9
+pytesseract==0.3.13
+opencv-python-headless==4.10.0.84
+pillow==10.4.0
+
+# StampCNN (ml/stamp_cnn.py) - install the CPU-only wheel explicitly, the
+# default PyPI index resolves a much larger CUDA build on Windows:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch==2.9.1

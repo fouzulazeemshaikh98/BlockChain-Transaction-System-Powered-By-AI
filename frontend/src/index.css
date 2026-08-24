@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-ink-900 text-slate-800 antialiased;
+}
+
+::selection {
+  background: rgba(15, 23, 42, 0.12);
+}
+
+/* Slim, navy-gray scrollbars everywhere — a plain default scrollbar reads as unfinished */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.16) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.16);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.28);
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pop {
+  animation: pop 0.35s ease-out;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.25s ease-out;
+}
+
+/* Result-screen icon animation: the circle draws itself, then the
+   checkmark/X draws inside it - the classic "receipt confirmation" motion,
+   done in pure SVG/CSS so no animation library is needed. */
+@keyframes draw-circle {
+  from {
+    stroke-dashoffset: var(--circle-length);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes draw-mark {
+  from {
+    stroke-dashoffset: var(--mark-length);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes result-icon-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.result-icon {
+  animation: result-icon-pop 0.3s ease-out;
+}
+.result-icon-circle {
+  stroke-dasharray: var(--circle-length);
+  stroke-dashoffset: var(--circle-length);
+  animation: draw-circle 0.5s ease-out forwards;
+}
+.result-icon-mark {
+  stroke-dasharray: var(--mark-length);
+  stroke-dashoffset: var(--mark-length);
+  animation: draw-mark 0.35s ease-out 0.45s forwards;
+}
+
+/* Shared card surface used across the app: crisp white panel, defined
+   border, tighter corners than before for a more structured/professional
+   "boxed" feel rather than a soft, casual one. */
+.surface-card {
+  @apply bg-ink-800 border border-line rounded-lg shadow-card transition-shadow duration-200;
+}
+
+/* Standard form control skin so every input/select in the app matches */
+.field {
+  @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800
+    placeholder:text-slate-400
+    focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500
+    transition-colors;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600
+    text-white text-sm font-semibold px-4 py-2.5 shadow-card
+    transition-colors duration-150 hover:bg-brand-700 active:scale-[0.98]
+    disabled:opacity-40 disabled:pointer-events-none;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300
+    bg-white text-slate-700 text-sm font-medium px-4 py-2.5
+    transition-colors hover:bg-slate-50 hover:border-slate-400
+    disabled:opacity-40 disabled:pointer-events-none;
+}

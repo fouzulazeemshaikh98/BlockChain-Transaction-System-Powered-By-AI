@@ -1,0 +1,14 @@
+{
+  "transactionHash": "0x2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890",
+  "network": "Ethereum",
+  "fromAddress": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A06",
+  "toAddress": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  "amount": 500,
+  "gasUsed": 145000,
+  "gasPrice": 35,
+  "nonce": 45,
+  "contractAddress": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  "functionName": "swapExactTokensForTokens",
+  "description": "Swap 500 USDC for ETH via Uniswap router",
+  "rawData": "38ed173900000000000000000000000000000000000000000000000000000001dcd65000"
+}

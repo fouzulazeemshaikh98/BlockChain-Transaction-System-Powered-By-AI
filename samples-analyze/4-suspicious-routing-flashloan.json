@@ -1,0 +1,14 @@
+{
+  "transactionHash": "0x4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+  "network": "Arbitrum",
+  "fromAddress": "0x9E5c1A2B3c4D5e6F7890AbCdEf1234567890AbCd",
+  "toAddress": "0x000000000dEadBeEf00000000000000000000dE",
+  "amount": 75000,
+  "gasUsed": 610000,
+  "gasPrice": 4,
+  "nonce": 3,
+  "contractAddress": "0x000000000dEadBeEf00000000000000000000dE",
+  "functionName": "flashLoan(address,uint256,bytes)",
+  "description": "Flash loan for arbitrage strategy",
+  "rawData": "5cffe9de0000000000000000000000000000000000000000000000000000000000000020"
+}
