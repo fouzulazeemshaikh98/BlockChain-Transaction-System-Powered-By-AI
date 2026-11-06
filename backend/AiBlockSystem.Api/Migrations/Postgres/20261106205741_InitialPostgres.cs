@@ -28,7 +28,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     Location = table.Column<string>(type: "text", nullable: true),
                     Latitude = table.Column<double>(type: "double precision", nullable: true),
                     Longitude = table.Column<double>(type: "double precision", nullable: true),
-                    AttemptedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    AttemptedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     ExpectedRoutingPath = table.Column<string>(type: "text", nullable: false),
                     ExpectedParameters = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,12 +82,12 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AccountNumber = table.Column<string>(type: "text", nullable: false),
                     PinHash = table.Column<string>(type: "text", nullable: false),
                     EmailVerified = table.Column<bool>(type: "boolean", nullable: false),
                     EmailVerificationCode = table.Column<string>(type: "text", nullable: true),
-                    EmailVerificationCodeExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    EmailVerificationCodeExpiresAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,7 +106,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     City = table.Column<string>(type: "text", nullable: false),
                     Country = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,7 +135,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     RiskScore = table.Column<double>(type: "double precision", nullable: false),
                     FlagsJson = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,7 +170,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     Status = table.Column<int>(type: "integer", nullable: false),
                     L2TxHash = table.Column<string>(type: "text", nullable: true),
                     Error = table.Column<string>(type: "text", nullable: true),
-                    CreatedUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedUtc = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,7 +193,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     Label = table.Column<string>(type: "text", nullable: false),
                     Reason = table.Column<string>(type: "text", nullable: true),
                     AddedByUserId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,13 +220,13 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     GasUsed = table.Column<decimal>(type: "numeric(28,8)", precision: 28, scale: 8, nullable: false),
                     GasPrice = table.Column<decimal>(type: "numeric(28,8)", precision: 28, scale: 8, nullable: false),
                     Nonce = table.Column<long>(type: "bigint", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ContractAddress = table.Column<string>(type: "text", nullable: true),
                     FunctionName = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     RawData = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     NocDocumentId = table.Column<int>(type: "integer", nullable: true),
                     RecipientAddress = table.Column<string>(type: "text", nullable: true),
@@ -235,7 +235,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     SettlementStatus = table.Column<int>(type: "integer", nullable: false),
                     SettlementError = table.Column<string>(type: "text", nullable: true),
                     ApprovedByUserId = table.Column<int>(type: "integer", nullable: true),
-                    ApprovedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    ApprovedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,7 +269,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     TransferRecordId = table.Column<int>(type: "integer", nullable: false),
                     FusedScore = table.Column<decimal>(type: "numeric(5,2)", precision: 5, scale: 2, nullable: false),
                     Decision = table.Column<string>(type: "text", nullable: false),
-                    GeneratedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    GeneratedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,8 +292,8 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     ContractAddress = table.Column<string>(type: "text", nullable: false),
                     SignatureHash = table.Column<string>(type: "text", nullable: false),
                     TxHash = table.Column<string>(type: "text", nullable: false),
-                    SettledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ChallengePeriodEnd = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    SettledAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ChallengePeriodEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -347,7 +347,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     ResponsePayload = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     ProcessingTimeMs = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -378,7 +378,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     TemplateSimilarityScore = table.Column<double>(type: "double precision", nullable: true),
                     TemplateIsMatch = table.Column<bool>(type: "boolean", nullable: true),
                     TemplateDeviationsJson = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {

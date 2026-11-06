@@ -10,6 +10,16 @@ namespace AiBlockSystem.Api.Data;
 /// controller or service needs to know which provider is active.
 public class PostgresAppDbContext : AppDbContext
 {
+    /// Map DateTime to "timestamp without time zone" (same semantics as SQL
+    /// Server's datetime2, no UTC-Kind enforcement). Set here - not only in
+    /// Program.cs - so the runtime model and the design-time model used to
+    /// generate migrations are identical; otherwise EF reports pending model
+    /// changes at startup.
+    static PostgresAppDbContext()
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
+
     public PostgresAppDbContext(DbContextOptions<PostgresAppDbContext> options) : base(options)
     {
     }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AiBlockSystem.Api.Migrations.Postgres
 {
     [DbContext(typeof(PostgresAppDbContext))]
-    [Migration("20261106204134_InitialPostgres")]
+    [Migration("20261106205741_InitialPostgres")]
     partial class InitialPostgres
     {
         /// <inheritdoc />
@@ -34,7 +34,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ModuleName")
                         .IsRequired()
@@ -111,7 +111,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AttemptedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Context")
                         .IsRequired()
@@ -199,7 +199,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DestinationCity")
                         .HasColumnType("text");
@@ -261,7 +261,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -315,7 +315,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("numeric(5,2)");
 
                     b.Property<DateTime>("GeneratedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("TransferRecordId")
                         .HasColumnType("integer");
@@ -337,14 +337,14 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("ChallengePeriodEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ContractAddress")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("SettledAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SignatureHash")
                         .IsRequired()
@@ -439,7 +439,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("numeric(28,8)");
 
                     b.Property<DateTime?>("ApprovedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("ApprovedByUserId")
                         .HasColumnType("integer");
@@ -448,7 +448,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -500,7 +500,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ToAddress")
                         .IsRequired()
@@ -536,7 +536,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<double>("FinalRiskScore")
                         .HasColumnType("double precision");
@@ -602,7 +602,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedUtc")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Decision")
                         .IsRequired()
@@ -673,7 +673,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -683,7 +683,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("EmailVerificationCodeExpiresAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("EmailVerified")
                         .HasColumnType("boolean");
@@ -742,7 +742,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -778,7 +778,7 @@ namespace AiBlockSystem.Api.Migrations.Postgres
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Label")
                         .IsRequired()
