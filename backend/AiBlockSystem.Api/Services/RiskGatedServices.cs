@@ -39,7 +39,8 @@ public class RiskEngineClient : IRiskEngineClient
     {
         _http = http;
         _http.BaseAddress = new Uri(options.Value.BaseUrl);
-        _http.Timeout = TimeSpan.FromSeconds(30);
+        // Generous: on Render's free tier the AI engine may need ~60 s to wake from sleep.
+        _http.Timeout = TimeSpan.FromSeconds(100);
     }
 
     public async Task<RiskAssessment> ScoreAsync(RiskScoreRequest request, string bearerToken, CancellationToken ct)
