@@ -90,7 +90,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_BASE_URL # URL
-        value: https://aiblock-backend.onrender.com
+        value: https://aiblock-backend-gob2.onrender.com
     routes:
       - type: rewrite
         source: /*
