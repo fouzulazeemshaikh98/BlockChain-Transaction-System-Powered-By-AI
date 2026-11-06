@@ -25,7 +25,9 @@ const config: HardhatUserConfig = {
       chainId: 31337,
     },
     localhost: {
-      url: "http://127.0.0.1:8545",
+      // LOCAL_RPC_URL lets the Render chain container deploy to the node it
+      // started on $PORT (see render-start.sh).
+      url: process.env.LOCAL_RPC_URL || "http://127.0.0.1:8545",
       chainId: 31337,
     },
     optimismSepolia: {

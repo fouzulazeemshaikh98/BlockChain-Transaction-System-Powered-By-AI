@@ -45,9 +45,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+// Database:Provider = SqlServer (default, local dev) | Postgres (Render).
+var dbProvider = builder.Configuration["Database:Provider"] ?? "SqlServer";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+if (dbProvider.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+{
+    // Keep DateTime handling identical to SQL Server's datetime2 (no
+    // UTC-Kind enforcement on timestamp columns).
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    connectionString = PostgresUrlToConnectionString(connectionString);
+    builder.Services.AddDbContext<PostgresAppDbContext>(options => options.UseNpgsql(connectionString));
+    builder.Services.AddScoped<AppDbContext>(sp => sp.GetRequiredService<PostgresAppDbContext>());
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+}
 
 builder.Services.Configure<AiEngineOptions>(builder.Configuration.GetSection("AiEngine"));
 builder.Services.Configure<BlockchainOptions>(builder.Configuration.GetSection("Blockchain"));
@@ -197,3 +210,29 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/// Render (and Heroku-style hosts) expose Postgres as a URL:
+/// postgresql://user:password@host:port/database. Npgsql wants key=value
+/// pairs. Anything that isn't a URL is passed through unchanged.
+static string PostgresUrlToConnectionString(string value)
+{
+    if (!value.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase)
+        && !value.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+    {
+        return value;
+    }
+
+    var uri = new Uri(value);
+    var userInfo = uri.UserInfo.Split(':', 2);
+    var builder = new Npgsql.NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.Port > 0 ? uri.Port : 5432,
+        Database = uri.AbsolutePath.TrimStart('/'),
+        Username = Uri.UnescapeDataString(userInfo[0]),
+        Password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "",
+        // Render's internal connections don't use TLS; external ones do.
+        SslMode = uri.Host.Contains('.') ? Npgsql.SslMode.Require : Npgsql.SslMode.Prefer,
+    };
+    return builder.ConnectionString;
+}

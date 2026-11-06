@@ -1,0 +1,97 @@
+# Render Blueprint - AI Block System (free tier)
+#
+# Deploy: Render dashboard -> New -> Blueprint -> pick this repo/branch.
+#
+# Services talk to each other over their public onrender.com URLs (free
+# instances can't receive private-network traffic). The URLs below assume
+# Render gives each service exactly its name as the subdomain. If a name is
+# taken, Render adds a suffix: copy the real URL from the dashboard into the
+# matching env var (marked "URL" below) and redeploy.
+
+databases:
+  - name: aiblock-db
+    plan: free
+    databaseName: aiblock
+    user: aiblock
+
+services:
+  # In-memory Hardhat chain. Wiped and redeployed on every restart/wake;
+  # contract addresses are deterministic (see contracts/render-start.sh).
+  - type: web
+    name: aiblock-chain
+    runtime: docker
+    plan: free
+    dockerContext: ./contracts
+    dockerfilePath: ./contracts/Dockerfile
+
+  # FastAPI risk oracle + NOC forensics (no PyTorch on the free tier).
+  - type: web
+    name: aiblock-ai-engine
+    runtime: docker
+    plan: free
+    dockerContext: ./ai-engine
+    dockerfilePath: ./ai-engine/Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: CHAIN_ID
+        value: "31337"
+      - key: SETTLEMENT_CONTRACT
+        value: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      # Hardhat public test account #6 - only valid on the throwaway test chain.
+      - key: RISK_ORACLE_KEY
+        value: "0x92db14e403b83dfe3df233f83dfa3a0d7096f21ca9b0d6d6b8d88b2b4ec1564e"
+      - key: JWT_KEY
+        fromService:
+          type: web
+          name: aiblock-backend
+          envVarKey: Jwt__Key
+      - key: JWT_ISSUER
+        value: AiBlockSystem
+      - key: JWT_AUDIENCE
+        value: AiBlockSystem
+
+  # ASP.NET Core API on PostgreSQL.
+  - type: web
+    name: aiblock-backend
+    runtime: docker
+    plan: free
+    dockerContext: ./backend/AiBlockSystem.Api
+    dockerfilePath: ./backend/AiBlockSystem.Api/Dockerfile
+    envVars:
+      - key: Database__Provider
+        value: Postgres
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: aiblock-db
+          property: connectionString
+      - key: Jwt__Key
+        generateValue: true
+      - key: AiEngine__BaseUrl # URL
+        value: https://aiblock-ai-engine.onrender.com
+      - key: Blockchain__RpcUrl # URL
+        value: https://aiblock-chain.onrender.com
+      - key: Blockchain__GatewayContractAddress
+        value: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      - key: RiskGated__SettlementContractAddress
+        value: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      - key: RiskGated__TokenAddress
+        value: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      - key: RiskGated__ChainName
+        value: Hardhat (Render)
+      - key: Cors__AllowedOrigins__0 # URL
+        value: https://aiblock-web.onrender.com
+
+  # React dashboard (static).
+  - type: web
+    name: aiblock-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL # URL
+        value: https://aiblock-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

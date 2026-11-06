@@ -96,7 +96,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<RegisterResponse>> ResendVerification(ResendVerificationRequest request)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == AuthService.NormalizeEmail(request.Email));
         if (user is null || user.EmailVerified)
         {
             return BadRequest("No pending verification for that email.");
@@ -162,7 +162,7 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<ActionResult> VerifyAdminPin(VerifyAdminPinRequest request)
     {
-        var admin = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        var admin = await _db.Users.FirstOrDefaultAsync(u => u.Email == AuthService.NormalizeEmail(request.Email));
         var ok = admin is not null && admin.IsActive && admin.Role == UserRole.Admin && _auth.VerifyPin(admin, request.Pin);
 
         if (!ok)

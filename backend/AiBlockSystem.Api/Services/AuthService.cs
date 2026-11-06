@@ -32,11 +32,19 @@ public class AuthService
 
     private static readonly TimeSpan VerificationCodeLifetime = TimeSpan.FromMinutes(15);
 
-    public async Task<bool> EmailExistsAsync(string email) =>
-        await _db.Users.AnyAsync(u => u.Email == email);
+    /// Emails are stored and compared lower-cased so lookups behave the same
+    /// on SQL Server (case-insensitive collation) and PostgreSQL (case-sensitive).
+    public static string NormalizeEmail(string email) => (email ?? string.Empty).Trim().ToLowerInvariant();
+
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+        email = NormalizeEmail(email);
+        return await _db.Users.AnyAsync(u => u.Email == email);
+    }
 
     public async Task<User?> ValidateCredentialsAsync(string email, string password)
     {
+        email = NormalizeEmail(email);
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user is null || !user.IsActive) return null;
 
@@ -58,7 +66,7 @@ public class AuthService
         string fullName, string email, string password, UserRole role, string pin, bool preVerified = false
     )
     {
-        var user = new User { FullName = fullName, Email = email, Role = role };
+        var user = new User { FullName = fullName, Email = NormalizeEmail(email), Role = role };
         user.PasswordHash = _hasher.HashPassword(user, password);
         user.PinHash = _hasher.HashPassword(user, pin);
         user.AccountNumber = await GenerateAccountNumberAsync();
@@ -90,6 +98,7 @@ public class AuthService
 
     public async Task<User?> VerifyEmailCodeAsync(string email, string code)
     {
+        email = NormalizeEmail(email);
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user is null || user.EmailVerified) return null;
         if (user.EmailVerificationCode != code) return null;

@@ -116,3 +116,36 @@ directly in the UI instead of being emailed).
 6. Try `ai-engine/samples/tampered_noc.jpg` instead → blocked immediately,
    with the specific forensic flags (and a Grad-CAM heatmap, if the CNN
    model is trained) explaining why (never reaches the transfer form).
+
+## Risk-gated settlement (POST /api/transfers)
+
+The AI engine's `/v1/risk/score` endpoint needs trained behavioural models.
+Train them once (synthetic data, ~10 s):
+
+```bash
+cd ai-engine && ./.venv/Scripts/python scripts/train_risk_models.py
+```
+
+Then use the **Risk-Gated Transfer** page in the web app, or the Flutter
+client in `mobile/` (see `mobile/README.md`).
+
+## Deploying to Render (free tier)
+
+`render.yaml` is a Render Blueprint for the whole stack:
+
+| Render resource | What it runs |
+|---|---|
+| `aiblock-db` | PostgreSQL (the backend switches from SQL Server via `Database__Provider=Postgres`) |
+| `aiblock-chain` | In-memory Hardhat node; contracts are redeployed on every start at fixed addresses |
+| `aiblock-ai-engine` | FastAPI risk oracle + NOC forensics (no PyTorch, so the stamp-CNN check is off) |
+| `aiblock-backend` | ASP.NET Core API |
+| `aiblock-web` | React dashboard (static site) |
+
+1. Push the branch to GitHub.
+2. In Render, go to **New → Blueprint**, pick this repo and branch, then **Apply**.
+3. If Render gave a service a different subdomain than its name, update the env
+   vars marked `# URL` in `render.yaml` (in the dashboard) and redeploy.
+
+Free-tier caveats: services sleep after ~15 min idle (first request takes
+about a minute). The chain resets whenever it restarts. Uploaded NOC files
+live on ephemeral disk. The free Postgres database expires after 30 days.

@@ -9,6 +9,12 @@ public class AppDbContext : DbContext
     {
     }
 
+    /// For provider-specific subclasses (PostgresAppDbContext) that keep
+    /// their own migrations set.
+    protected AppDbContext(DbContextOptions options) : base(options)
+    {
+    }
+
     public DbSet<User> Users => Set<User>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<TransactionAnalysis> TransactionAnalyses => Set<TransactionAnalysis>();

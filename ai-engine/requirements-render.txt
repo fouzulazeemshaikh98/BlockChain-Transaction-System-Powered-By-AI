@@ -1,0 +1,22 @@
+# Render free tier (512 MB RAM): everything from requirements.txt except
+# torch. Without torch the stamp-CNN check in the NOC flow switches itself
+# off (services/cnn_forensic_service.py returns "unavailable"); OCR, the
+# other stamp forensics and the whole risk-oracle pipeline still run.
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+pandas==2.2.3
+numpy==1.26.4
+scikit-learn==1.5.2
+python-dotenv==1.0.1
+python-multipart==0.0.9
+pytesseract==0.3.13
+opencv-python-headless==4.10.0.84
+pillow==10.4.0
+# xgboost-cpu: same library without the ~250 MB CUDA/NCCL dependency
+xgboost-cpu==3.4.1
+joblib==1.5.3
+eth-account==0.14.0
+eth-abi==6.0.0
+eth-utils==6.0.0
+PyJWT==2.15.1
