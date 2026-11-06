@@ -26,6 +26,14 @@ if (File.Exists(deploymentsFile))
         {
             builder.Configuration["Blockchain:GatewayContractAddress"] = addressElement.GetString();
         }
+        if (deployment.TryGetProperty("riskGatedSettlement", out var settlementElement))
+        {
+            builder.Configuration["RiskGated:SettlementContractAddress"] = settlementElement.GetString();
+        }
+        if (deployment.TryGetProperty("mockUSDC", out var tokenElement))
+        {
+            builder.Configuration["RiskGated:TokenAddress"] = tokenElement.GetString();
+        }
     }
     catch (Exception ex)
     {
@@ -48,6 +56,9 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddHttpClient<FastApiClientService>();
 builder.Services.AddHttpClient<GeoLocationService>();
 builder.Services.AddSingleton<BlockchainService>();
+builder.Services.Configure<RiskGatedOptions>(builder.Configuration.GetSection("RiskGated"));
+builder.Services.AddHttpClient<IRiskEngineClient, RiskEngineClient>();
+builder.Services.AddSingleton<ISettlementService, SettlementService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProtocolTemplateService>();
 builder.Services.AddScoped<ReportService>();

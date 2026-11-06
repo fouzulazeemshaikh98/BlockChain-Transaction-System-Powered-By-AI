@@ -10,6 +10,14 @@ pytesseract==0.3.13
 opencv-python-headless==4.10.0.84
 pillow==10.4.0
 
+# Risk oracle (/v1/risk/score): behavioural models, attestation signing, JWT
+xgboost==3.4.1
+joblib==1.5.3
+eth-account==0.14.0
+eth-abi==6.0.0
+eth-utils==6.0.0
+PyJWT==2.15.1
+
 # StampCNN (ml/stamp_cnn.py) - install the CPU-only wheel explicitly, the
 # default PyPI index resolves a much larger CUDA build on Windows:
 #   pip install torch --index-url https://download.pytorch.org/whl/cpu

@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          "Inter",
+          "Plus Jakarta Sans",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -57,6 +57,11 @@ export default {
       boxShadow: {
         card: "0 1px 2px 0 rgba(15,23,42,0.05), 0 4px 12px -4px rgba(15,23,42,0.10)",
         "card-hover": "0 2px 4px 0 rgba(15,23,42,0.06), 0 8px 20px -6px rgba(15,23,42,0.14)",
+        // Soft brand-tinted glow used behind solid icon badges and the
+        // primary button - reads as considered/designed rather than the
+        // flat black drop-shadow every default Tailwind template ships with.
+        glow: "0 8px 20px -6px rgba(37,99,235,0.35)",
+        "glow-sm": "0 4px 10px -3px rgba(37,99,235,0.30)",
       },
     },
   },

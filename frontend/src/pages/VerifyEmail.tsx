@@ -53,13 +53,16 @@ export default function VerifyEmail() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-ink-900 px-6">
+    <div className="min-h-screen flex items-center justify-center px-6">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm surface-card p-8 space-y-5 animate-fade-in-up"
       >
         <div className="text-center mb-2">
-          <div className="h-12 w-12 rounded-lg bg-brand-600 flex items-center justify-center mx-auto mb-3">
+          <div
+            className="h-12 w-12 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-glow-sm"
+            style={{ background: "linear-gradient(135deg, #3b82f6, #1d4ed8)" }}
+          >
             <Blocks className="h-6 w-6 text-white" strokeWidth={2.25} />
           </div>
           <h1 className="text-lg font-bold text-slate-900">Verify your email</h1>

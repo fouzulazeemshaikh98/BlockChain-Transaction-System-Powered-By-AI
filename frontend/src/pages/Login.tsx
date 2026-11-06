@@ -36,14 +36,17 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-ink-900 px-6">
+    <div className="min-h-screen flex items-center justify-center px-6">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm surface-card p-8 space-y-5 animate-fade-in-up"
       >
         <div className="flex flex-col items-center text-center gap-2">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-brand-600 flex items-center justify-center shrink-0">
+            <div
+              className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 shadow-glow-sm"
+              style={{ background: "linear-gradient(135deg, #3b82f6, #1d4ed8)" }}
+            >
               <Blocks className="h-4 w-4 text-white" strokeWidth={2.25} />
             </div>
             <span className="text-xl font-bold tracking-tight text-slate-900">AI Block System</span>

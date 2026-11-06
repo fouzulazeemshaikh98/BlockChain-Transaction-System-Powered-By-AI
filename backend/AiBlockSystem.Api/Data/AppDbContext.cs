@@ -21,6 +21,13 @@ public class AppDbContext : DbContext
     public DbSet<WalletAccount> WalletAccounts => Set<WalletAccount>();
     public DbSet<LoginAttempt> LoginAttempts => Set<LoginAttempt>();
 
+    // Risk-gated settlement flow (POST /api/transfers)
+    public DbSet<TransferRecord> Transfers => Set<TransferRecord>();
+    public DbSet<RiskReport> RiskReports => Set<RiskReport>();
+    public DbSet<ModuleScore> ModuleScores => Set<ModuleScore>();
+    public DbSet<TemplateMatchResult> TemplateMatchResults => Set<TemplateMatchResult>();
+    public DbSet<SettlementRecord> SettlementRecords => Set<SettlementRecord>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
@@ -85,5 +92,46 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<WalletAccount>().HasIndex(w => w.AccountNumber).IsUnique();
         modelBuilder.Entity<WalletAccount>().HasIndex(w => w.Address).IsUnique();
+
+        modelBuilder.Entity<TransferRecord>().HasIndex(t => t.TransferId).IsUnique();
+        modelBuilder.Entity<TransferRecord>().Property(t => t.TransferId).HasMaxLength(66);
+        modelBuilder.Entity<TransferRecord>().Property(t => t.Amount).HasPrecision(18, 8);
+        modelBuilder.Entity<TransferRecord>()
+            .HasOne(t => t.User)
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<RiskReport>()
+            .HasOne(r => r.TransferRecord)
+            .WithOne(t => t.RiskReport)
+            .HasForeignKey<RiskReport>(r => r.TransferRecordId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<RiskReport>().Property(r => r.FusedScore).HasPrecision(5, 2);
+
+        modelBuilder.Entity<ModuleScore>()
+            .HasOne(m => m.RiskReport)
+            .WithMany(r => r.ModuleScores)
+            .HasForeignKey(m => m.RiskReportId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<ModuleScore>().Property(m => m.Score).HasPrecision(5, 2);
+
+        modelBuilder.Entity<TemplateMatchResult>()
+            .HasOne(m => m.TransferRecord)
+            .WithMany(t => t.TemplateMatches)
+            .HasForeignKey(m => m.TransferRecordId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<TemplateMatchResult>()
+            .HasOne(m => m.ProtocolTemplate)
+            .WithMany()
+            .HasForeignKey(m => m.ProtocolTemplateId)
+            .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<TemplateMatchResult>().Property(m => m.SimilarityScore).HasPrecision(5, 2);
+
+        modelBuilder.Entity<SettlementRecord>()
+            .HasOne(s => s.TransferRecord)
+            .WithOne(t => t.Settlement)
+            .HasForeignKey<SettlementRecord>(s => s.TransferRecordId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

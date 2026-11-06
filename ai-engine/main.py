@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import forensics, noc, preprocess, risk, semantic, template
+from api.routes import forensics, noc, preprocess, risk, risk_v1, semantic, template
 
 app = FastAPI(
     title="AI Block System - AI Risk Engine",
@@ -28,6 +28,8 @@ app.include_router(template.router, prefix="/api/analyze", tags=["template"])
 app.include_router(forensics.router, prefix="/api/analyze", tags=["forensics"])
 app.include_router(risk.router, prefix="/api/analyze", tags=["risk"])
 app.include_router(noc.router, prefix="/api/noc", tags=["noc"])
+# Risk oracle used by the risk-gated settlement flow (POST /api/transfers).
+app.include_router(risk_v1.router, prefix="/v1", tags=["risk-oracle"])
 
 
 @app.get("/health")

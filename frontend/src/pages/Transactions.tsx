@@ -16,6 +16,7 @@ import { downloadReportPdf } from "../lib/reportPdf";
 import { downloadReceiptPdf } from "../lib/receiptPdf";
 import RiskBadge from "../components/RiskBadge";
 import StatusBadge from "../components/StatusBadge";
+import ScrollFadeX from "../components/ScrollFadeX";
 
 const NETWORKS = ["All", "Ethereum", "Arbitrum", "Optimism", "Polygon"];
 const RISK_LEVELS = ["All", "VERIFIED", "LOW", "MEDIUM", "HIGH", "CRITICAL"];
@@ -150,8 +151,9 @@ export default function Transactions() {
         </select>
       </div>
 
-      <div className="surface-card overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="surface-card overflow-hidden">
+        <ScrollFadeX>
+          <table className="w-full text-sm">
           <thead className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
             <tr>
               <th className="px-4 py-3 font-semibold">Transaction Hash</th>
@@ -235,6 +237,7 @@ export default function Transactions() {
             )}
           </tbody>
         </table>
+        </ScrollFadeX>
       </div>
 
       {totalPages > 1 && (

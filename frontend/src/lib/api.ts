@@ -713,3 +713,53 @@ export async function fetchDashboardTrend(days = 30): Promise<DashboardTrendPoin
   const { data } = await client.get("/api/dashboard/trend", { params: { days } });
   return data;
 }
+
+// ---- Risk-gated settlement (POST /api/transfers) ----
+
+export interface RiskGatedTransferPayload {
+  receiver: string;
+  amount: number;
+  pin: string;
+  calldata?: string;
+}
+
+export interface RiskGatedTransferResult {
+  accepted: boolean; // true = 202 settled on-chain, false = 422 blocked
+  transferId: string;
+  riskScore: number;
+  txHash?: string;
+  findings: string[];
+}
+
+export interface RiskGatedTransferSummary {
+  id: number;
+  transferId: string;
+  sender: string;
+  receiver: string;
+  receiverLabel: string | null;
+  amount: number;
+  chain: string;
+  riskScore: number;
+  decision: "APPROVE" | "BLOCK";
+  status: "Scoring" | "Blocked" | "Submitted" | "Settled" | "Failed";
+  l2TxHash: string | null;
+  findings: string[];
+  createdUtc: string;
+}
+
+export async function submitRiskGatedTransfer(payload: RiskGatedTransferPayload): Promise<RiskGatedTransferResult> {
+  try {
+    const { data } = await client.post("/api/transfers", payload);
+    return { accepted: true, findings: [], ...data };
+  } catch (err: any) {
+    if (err?.response?.status === 422) {
+      return { accepted: false, ...err.response.data, findings: err.response.data.findings ?? [] };
+    }
+    throw new Error(err?.response?.data?.message ?? extractErrorMessage(err, "Transfer failed"));
+  }
+}
+
+export async function fetchRiskGatedTransfers(): Promise<RiskGatedTransferSummary[]> {
+  const { data } = await client.get("/api/transfers");
+  return data;
+}

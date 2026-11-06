@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { DashboardSummaryResponse, fetchDashboardSummary, TransactionResponse } from "../lib/api";
+import ScrollFadeX from "./ScrollFadeX";
 
 function getInitials(fullName: string): string {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
@@ -26,6 +27,7 @@ function getInitials(fullName: string): string {
 const NAV_LINKS = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/send-transfer", label: "Send Transfer", icon: Send },
+  { to: "/risk-transfer", label: "Risk-Gated Transfer", icon: ShieldCheck },
   { to: "/transactions", label: "Transactions", icon: ListTree },
   { to: "/reports", label: "Reports", icon: FileText },
   { to: "/templates", label: "Protocol Templates", icon: ShieldCheck },
@@ -85,11 +87,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Solid navy masthead - business-portal style top bar, no left sidebar */}
-      <div className="bg-brand-800 text-white">
+      {/* Navy masthead - business-portal style top bar, no left sidebar. A
+          subtle gradient + bottom accent line instead of a flat fill gives
+          it the depth a one-color bar never has. */}
+      <div
+        className="text-white relative"
+        style={{ background: "linear-gradient(115deg, #172554 0%, #1e3a8a 55%, #1d4ed8 130%)" }}
+      >
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-400/60 to-transparent" />
         <div className="px-6 py-2.5 flex items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <Blocks className="h-5 w-5 text-white" strokeWidth={2.25} />
+            <div className="h-7 w-7 rounded-lg bg-white/10 ring-1 ring-white/20 flex items-center justify-center shrink-0">
+              <Blocks className="h-4 w-4 text-white" strokeWidth={2.25} />
+            </div>
             <span className="text-sm font-bold tracking-tight">AI BLOCK</span>
           </div>
 
@@ -189,8 +199,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* White horizontal tab bar underneath the masthead - replaces the old left sidebar */}
       <nav className="sticky top-0 z-30 bg-white border-b border-line">
-        <div className="px-6 flex items-center gap-6 overflow-x-auto">
-          {(isRestrictedUser ? NAV_LINKS.filter((l) => l.to === "/send-transfer") : NAV_LINKS).map(({ to, label, icon: Icon, end }) => (
+        <ScrollFadeX className="px-6 flex items-center gap-6">
+          {(isRestrictedUser ? NAV_LINKS.filter((l) => l.to === "/send-transfer" || l.to === "/risk-transfer") : NAV_LINKS).map(({ to, label, icon: Icon, end }) => (
             <NavLink key={to} to={to} end={end} className={tabLinkClass}>
               <Icon className="h-4 w-4" strokeWidth={2} />
               {label}
@@ -202,7 +212,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               Admin
             </NavLink>
           )}
-        </div>
+        </ScrollFadeX>
       </nav>
 
       <main className="flex-1 px-6 py-8 animate-fade-in-up">{children}</main>

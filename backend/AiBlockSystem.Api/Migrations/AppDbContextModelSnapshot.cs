@@ -148,6 +148,35 @@ namespace AiBlockSystem.Api.Migrations
                     b.ToTable("LoginAttempts");
                 });
 
+            modelBuilder.Entity("AiBlockSystem.Api.Models.ModuleScore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FlaggedReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModuleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RiskReportId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Score")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RiskReportId");
+
+                    b.ToTable("ModuleScores");
+                });
+
             modelBuilder.Entity("AiBlockSystem.Api.Models.NocDocument", b =>
                 {
                     b.Property<int>("Id")
@@ -266,6 +295,73 @@ namespace AiBlockSystem.Api.Migrations
                     b.ToTable("ProtocolTemplates");
                 });
 
+            modelBuilder.Entity("AiBlockSystem.Api.Models.RiskReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Decision")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("FusedScore")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransferRecordId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TransferRecordId")
+                        .IsUnique();
+
+                    b.ToTable("RiskReports");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.SettlementRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ChallengePeriodEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ContractAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SettledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SignatureHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TransferRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TxHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TransferRecordId")
+                        .IsUnique();
+
+                    b.ToTable("SettlementRecords");
+                });
+
             modelBuilder.Entity("AiBlockSystem.Api.Models.SystemSetting", b =>
                 {
                     b.Property<int>("Id")
@@ -291,6 +387,40 @@ namespace AiBlockSystem.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("SystemSettings");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.TemplateMatchResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Deviations")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MatchedFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProtocolTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SimilarityScore")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("TransferRecordId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProtocolTemplateId");
+
+                    b.HasIndex("TransferRecordId");
+
+                    b.ToTable("TemplateMatchResults");
                 });
 
             modelBuilder.Entity("AiBlockSystem.Api.Models.Transaction", b =>
@@ -447,6 +577,84 @@ namespace AiBlockSystem.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("TransactionAnalyses");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.TransferRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<string>("Calldata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Chain")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Decision")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Findings")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("L2TxHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Nonce")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Receiver")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RiskScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransferId")
+                        .IsRequired()
+                        .HasMaxLength(66)
+                        .HasColumnType("nvarchar(66)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TransferId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transfers");
                 });
 
             modelBuilder.Entity("AiBlockSystem.Api.Models.User", b =>
@@ -608,6 +816,17 @@ namespace AiBlockSystem.Api.Migrations
                     b.Navigation("TransactionAnalysis");
                 });
 
+            modelBuilder.Entity("AiBlockSystem.Api.Models.ModuleScore", b =>
+                {
+                    b.HasOne("AiBlockSystem.Api.Models.RiskReport", "RiskReport")
+                        .WithMany("ModuleScores")
+                        .HasForeignKey("RiskReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RiskReport");
+                });
+
             modelBuilder.Entity("AiBlockSystem.Api.Models.NocDocument", b =>
                 {
                     b.HasOne("AiBlockSystem.Api.Models.User", "User")
@@ -617,6 +836,46 @@ namespace AiBlockSystem.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.RiskReport", b =>
+                {
+                    b.HasOne("AiBlockSystem.Api.Models.TransferRecord", "TransferRecord")
+                        .WithOne("RiskReport")
+                        .HasForeignKey("AiBlockSystem.Api.Models.RiskReport", "TransferRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransferRecord");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.SettlementRecord", b =>
+                {
+                    b.HasOne("AiBlockSystem.Api.Models.TransferRecord", "TransferRecord")
+                        .WithOne("Settlement")
+                        .HasForeignKey("AiBlockSystem.Api.Models.SettlementRecord", "TransferRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransferRecord");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.TemplateMatchResult", b =>
+                {
+                    b.HasOne("AiBlockSystem.Api.Models.ProtocolTemplate", "ProtocolTemplate")
+                        .WithMany()
+                        .HasForeignKey("ProtocolTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AiBlockSystem.Api.Models.TransferRecord", "TransferRecord")
+                        .WithMany("TemplateMatches")
+                        .HasForeignKey("TransferRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProtocolTemplate");
+
+                    b.Navigation("TransferRecord");
                 });
 
             modelBuilder.Entity("AiBlockSystem.Api.Models.Transaction", b =>
@@ -655,6 +914,17 @@ namespace AiBlockSystem.Api.Migrations
                     b.Navigation("Transaction");
                 });
 
+            modelBuilder.Entity("AiBlockSystem.Api.Models.TransferRecord", b =>
+                {
+                    b.HasOne("AiBlockSystem.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AiBlockSystem.Api.Models.WatchlistEntry", b =>
                 {
                     b.HasOne("AiBlockSystem.Api.Models.User", "AddedByUser")
@@ -666,6 +936,11 @@ namespace AiBlockSystem.Api.Migrations
                     b.Navigation("AddedByUser");
                 });
 
+            modelBuilder.Entity("AiBlockSystem.Api.Models.RiskReport", b =>
+                {
+                    b.Navigation("ModuleScores");
+                });
+
             modelBuilder.Entity("AiBlockSystem.Api.Models.Transaction", b =>
                 {
                     b.Navigation("Analysis");
@@ -674,6 +949,15 @@ namespace AiBlockSystem.Api.Migrations
             modelBuilder.Entity("AiBlockSystem.Api.Models.TransactionAnalysis", b =>
                 {
                     b.Navigation("Anomalies");
+                });
+
+            modelBuilder.Entity("AiBlockSystem.Api.Models.TransferRecord", b =>
+                {
+                    b.Navigation("RiskReport");
+
+                    b.Navigation("Settlement");
+
+                    b.Navigation("TemplateMatches");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import SendTransfer from "./pages/SendTransfer";
+import RiskGatedTransfer from "./pages/RiskGatedTransfer";
 import Transactions from "./pages/Transactions";
 import Reports from "./pages/Reports";
 import Report from "./pages/Report";
@@ -35,6 +36,7 @@ export default function App() {
 
         <Route path="/" element={<Protected restrictTo={STAFF_ONLY}><Dashboard /></Protected>} />
         <Route path="/send-transfer" element={<Protected><SendTransfer /></Protected>} />
+        <Route path="/risk-transfer" element={<Protected><RiskGatedTransfer /></Protected>} />
         <Route path="/transactions" element={<Protected restrictTo={STAFF_ONLY}><Transactions /></Protected>} />
         <Route path="/reports" element={<Protected restrictTo={STAFF_ONLY}><Reports /></Protected>} />
         <Route path="/reports/:transactionId" element={<Protected restrictTo={STAFF_ONLY}><Report /></Protected>} />

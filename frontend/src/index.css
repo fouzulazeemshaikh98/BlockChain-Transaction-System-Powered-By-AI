@@ -8,6 +8,11 @@ html {
 
 body {
   @apply bg-ink-900 text-slate-800 antialiased;
+  /* Faint dot-grid texture on the page background - the kind of detail a
+     flat single-color background never has, so the whole app reads as
+     considered rather than a default Tailwind-template gray. */
+  background-image: radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 ::selection {
@@ -112,7 +117,15 @@ body {
    border, tighter corners than before for a more structured/professional
    "boxed" feel rather than a soft, casual one. */
 .surface-card {
-  @apply bg-ink-800 border border-line rounded-lg shadow-card transition-shadow duration-200;
+  @apply bg-ink-800 border border-line rounded-xl shadow-card transition-shadow duration-200;
+}
+
+/* Solid gradient icon badge used in stat tiles and section headers - a
+   confident saturated block with a soft colored glow reads as designed;
+   the flat pastel-tint squares most dashboard templates default to don't. */
+.icon-badge {
+  @apply h-11 w-11 rounded-xl flex items-center justify-center shrink-0 text-white shadow-glow-sm;
+  background: linear-gradient(135deg, var(--badge-from, #3b82f6), var(--badge-to, #1d4ed8));
 }
 
 /* Standard form control skin so every input/select in the app matches */
@@ -124,10 +137,15 @@ body {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600
-    text-white text-sm font-semibold px-4 py-2.5 shadow-card
-    transition-colors duration-150 hover:bg-brand-700 active:scale-[0.98]
-    disabled:opacity-40 disabled:pointer-events-none;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg
+    text-white text-sm font-semibold px-4 py-2.5 shadow-glow-sm
+    transition-all duration-150 active:scale-[0.98]
+    disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 10px 24px -6px rgba(37, 99, 235, 0.45);
 }
 
 .btn-secondary {

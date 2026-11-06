@@ -62,6 +62,7 @@ import {
 } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import SlideOver from "../components/SlideOver";
+import ScrollFadeX from "../components/ScrollFadeX";
 
 type Tab = "users" | "loginActivity" | "logs" | "thresholds" | "watchlist" | "wallets" | "templates" | "vault";
 
@@ -182,7 +183,7 @@ export default function Admin() {
         </div>
       )}
 
-      <div className="flex gap-1.5 border-b border-line overflow-x-auto">
+      <ScrollFadeX className="flex gap-1.5 border-b border-line">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -197,7 +198,7 @@ export default function Admin() {
             {label}
           </button>
         ))}
-      </div>
+      </ScrollFadeX>
 
       {tab === "users" && <UsersPanel />}
       {tab === "loginActivity" && <LoginActivityPanel />}
@@ -334,7 +335,7 @@ function UsersPanel() {
       {error && <div className="text-sm text-red-700 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</div>}
 
       <div className="surface-card overflow-hidden">
-        <div className="overflow-x-auto">
+        <ScrollFadeX>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
@@ -385,7 +386,7 @@ function UsersPanel() {
               )}
             </tbody>
           </table>
-        </div>
+        </ScrollFadeX>
       </div>
 
       <SlideOver open={showCreate} title="Create User" onClose={() => setShowCreate(false)}>
@@ -540,7 +541,7 @@ function LoginActivityPanel() {
       </div>
 
       <div className="surface-card overflow-hidden">
-        <div className="overflow-x-auto">
+        <ScrollFadeX>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
@@ -609,7 +610,7 @@ function LoginActivityPanel() {
               )}
             </tbody>
           </table>
-        </div>
+        </ScrollFadeX>
       </div>
 
       <div className="flex items-center justify-end gap-2">
@@ -683,7 +684,7 @@ function LogsPanel() {
       </div>
 
       <div className="surface-card overflow-hidden">
-        <div className="overflow-x-auto">
+        <ScrollFadeX>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
@@ -752,7 +753,7 @@ function LogsPanel() {
               )}
             </tbody>
           </table>
-        </div>
+        </ScrollFadeX>
       </div>
 
       <div className="flex items-center justify-end gap-2">
@@ -1017,7 +1018,7 @@ function WatchlistPanel() {
         <p className="text-sm text-slate-500">Loading...</p>
       ) : (
         <div className="surface-card overflow-hidden">
-          <div className="overflow-x-auto">
+          <ScrollFadeX>
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
@@ -1060,7 +1061,7 @@ function WatchlistPanel() {
                 )}
               </tbody>
             </table>
-          </div>
+          </ScrollFadeX>
         </div>
       )}
 
@@ -1186,7 +1187,7 @@ function WalletsPanel() {
         <p className="text-sm text-slate-500">Loading...</p>
       ) : (
         <div className="surface-card overflow-hidden">
-          <div className="overflow-x-auto">
+          <ScrollFadeX>
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
@@ -1237,7 +1238,7 @@ function WalletsPanel() {
                 )}
               </tbody>
             </table>
-          </div>
+          </ScrollFadeX>
         </div>
       )}
 

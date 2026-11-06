@@ -25,6 +25,7 @@ import {
 } from "../lib/api";
 import RiskBadge from "../components/RiskBadge";
 import StatusBadge from "../components/StatusBadge";
+import ScrollFadeX from "../components/ScrollFadeX";
 
 const RISK_COLORS: Record<string, string> = {
   VERIFIED: "#34d399",
@@ -32,6 +33,13 @@ const RISK_COLORS: Record<string, string> = {
   MEDIUM: "#fbbf24",
   HIGH: "#fb923c",
   CRITICAL: "#f87171",
+};
+
+const TONE_GRADIENTS: Record<string, [string, string]> = {
+  brand: ["#60a5fa", "#2563eb"],
+  emerald: ["#34d399", "#059669"],
+  red: ["#f87171", "#dc2626"],
+  amber: ["#fbbf24", "#d97706"],
 };
 
 function StatCard({
@@ -43,16 +51,17 @@ function StatCard({
   label: string;
   value: string | number;
   icon: React.ComponentType<{ className?: string }>;
-  tone: string;
+  tone: keyof typeof TONE_GRADIENTS;
 }) {
+  const [from, to] = TONE_GRADIENTS[tone];
   return (
     <div className="surface-card p-5 flex items-center gap-4">
-      <div className={`h-11 w-11 rounded-lg flex items-center justify-center shrink-0 ${tone}`}>
+      <div className="icon-badge" style={{ "--badge-from": from, "--badge-to": to } as React.CSSProperties}>
         <Icon className="h-5 w-5" />
       </div>
       <div>
         <div className="text-xs text-slate-500">{label}</div>
-        <div className="text-2xl font-bold text-slate-900 tabular-nums">{value}</div>
+        <div className="text-2xl font-bold text-slate-900 tabular-nums tracking-tight">{value}</div>
       </div>
     </div>
   );
@@ -110,25 +119,25 @@ export default function Dashboard() {
           label="Total Transactions"
           value={summary.totalTransactions}
           icon={Activity}
-          tone="bg-brand-500/15 text-brand-700"
+          tone="brand"
         />
         <StatCard
           label="Verified Transactions"
           value={summary.verifiedTransactions}
           icon={ShieldCheck}
-          tone="bg-emerald-500/15 text-emerald-700"
+          tone="emerald"
         />
         <StatCard
           label="High Risk Transactions"
           value={summary.highRiskTransactions}
           icon={ShieldAlert}
-          tone="bg-red-500/15 text-red-700"
+          tone="red"
         />
         <StatCard
           label="Average Risk Score"
           value={summary.averageRiskScore.toFixed(1)}
           icon={Gauge}
-          tone="bg-amber-500/15 text-amber-700"
+          tone="amber"
         />
       </div>
 
@@ -214,8 +223,9 @@ export default function Dashboard() {
             View all
           </Link>
         </div>
-        <div className="surface-card overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="surface-card overflow-hidden">
+          <ScrollFadeX>
+            <table className="w-full text-sm">
             <thead className="text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wide bg-slate-100">
               <tr>
                 <th className="px-4 py-3 font-semibold">Transaction Hash</th>
@@ -262,6 +272,7 @@ export default function Dashboard() {
               )}
             </tbody>
           </table>
+          </ScrollFadeX>
         </div>
       </section>
     </div>

@@ -16,6 +16,8 @@ const config: HardhatUserConfig = {
     version: "0.8.24",
     settings: {
       optimizer: { enabled: true, runs: 200 },
+      // OpenZeppelin 5.x's ECDSA/Bytes helpers use the MCOPY opcode (Cancun).
+      evmVersion: "cancun",
     },
   },
   networks: {
